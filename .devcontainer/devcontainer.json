@@ -1,0 +1,21 @@
+{
+  "name": "Node.js & Vite Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:24",
+  "containerUser": "node",
+  "updateRemoteUserUID": true,
+  "forwardPorts": [5173],
+  "postCreateCommand": "npm install",
+  "customizations": {
+    "node": {
+      "extensions": [
+        "ms-vscode.vscode-typescript-next"
+      ]
+    },
+    "vscode": {
+      "extensions": [
+        "vector-of-bool.gitflow",
+        "GitHub.copilot-chat"
+      ]
+    }
+  }
+}
