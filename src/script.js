@@ -1,15 +1,17 @@
+import GUI from 'lil-gui'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'lil-gui'
-import { RGBELoader} from 'three/examples/jsm/loaders/RGBELoader.js'
-
-
-const gui = new dat.GUI()
-const rgbeLoader = new RGBELoader()
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
 /**
  * Base
  */
+// Debug
+const gui = new GUI({
+    width: 400
+})
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -17,94 +19,40 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 /**
- * Textures
+ * Loaders
  */
-const loadingManager = new THREE.LoadingManager(
-    () => console.log('onLoad'),
-    () => console.log('onProgress'),
-    () => console.log('onError')
+// Texture loader
+const textureLoader = new THREE.TextureLoader()
+
+// Draco loader
+const dracoLoader = new DRACOLoader()
+dracoLoader.setDecoderPath('draco/')
+
+// GLTF loader
+const gltfLoader = new GLTFLoader()
+gltfLoader.setDRACOLoader(dracoLoader)
+
+/**
+ * Materials
+ */
+// Baked material
+const bakedMaterial = new THREE.MeshMatcapMaterial({ color: 0xffffff })
+
+/**
+ * Model
+ */
+gltfLoader.load(
+    //'model/scene2.glb',
+    'model/VivarStudios_3.glb',
+    (gltf) =>
+    {
+        gltf.scene.traverse((child) =>
+        {
+            child.material = bakedMaterial
+        })
+        scene.add(gltf.scene)
+    }
 )
-const textureLoader = new THREE.TextureLoader(loadingManager)
-const doorColorTexture = textureLoader.load('/textures/door/color.jpg')
-const doorAlphaTexture = textureLoader.load('/textures/door/alpha.jpg')
-const doorAmbientOcclusionTexture = textureLoader.load('/textures/door/ambientOcclusion.jpg')
-const doorHeightTexture = textureLoader.load('/textures/door/height.jpg')
-const doorNormalTexture = textureLoader.load('/textures/door/normal.jpg')
-const doorMetalnessTexture = textureLoader.load('/textures/door/metalness.jpg')
-const doorRoughnessTexture = textureLoader.load('/textures/door/roughness.jpg')
-const matcapTexture = textureLoader.load('/textures/matcaps/1.png')
-const gradientTexture = textureLoader.load('/textures/gradients/3.jpg')
-
-doorColorTexture.colorSpace = THREE.SRGBColorSpace
-matcapTexture.colorSpace = THREE.SRGBColorSpace
-
-/**
- * Objects
- */
-const material = new THREE.MeshPhysicalMaterial()
-material.metalness = 0
-material.roughness = 0
-material.map = doorColorTexture
-material.aoMap = doorAmbientOcclusionTexture
-material.aoMapIntensity = 2
-material.displacementMap = doorHeightTexture
-material.displacementScale = 0.05
-material.normalMap = doorNormalTexture
-material.metalnessMap = doorMetalnessTexture
-material.roughnessMap = doorRoughnessTexture
-material.transparent = true
-material.alphaMap = doorAlphaTexture
-material.gradientTexture = gradientTexture
-material.side = THREE.DoubleSide
-material.clearcoat = 1
-material.clearcoatRoughness = 0
-
-material.transmission = 1
-material.thickness = 1
-material.ior = 1.3
-
-
-//material.map = doorColorTexture
-gui.add(material, 'metalness').min(0).max(1).step(0.001)
-gui.add(material, 'roughness').min(0).max(1).step(0.001)
-gui.add(material, 'clearcoatRoughness').min(0).max(10).step(0.001)
-
-
-
-const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material)
-sphere.position.x = -1.5
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material)
-const torus = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.2, 16, 32), material)
-torus.position.x = 1.5
-scene.add(sphere, plane, torus)
-
-
-/**
- * Lights
- */
-const ambientLight = new THREE.AmbientLight(0xffffff, 1)
-scene.add(ambientLight)
-
-const pointLight = new THREE.PointLight(0xffffff, 30)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
-scene.add(pointLight)
-
-/**
- * Environment map
- */
-rgbeLoader.load('/textures/environmentMap/2k.hdr', (environmentMap) =>
-{
-    //console.log('environmentMap', environmentMap)
-    environmentMap.mapping = THREE.EquirectangularReflectionMapping
-    scene.environment = environmentMap
-    scene.background = environmentMap
-
-    // Update materials
-    material.needsUpdate = true
-})
-
 
 /**
  * Sizes
@@ -133,10 +81,10 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 1
-camera.position.y = 1
-camera.position.z = 2
+const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
+camera.position.x = 4
+camera.position.y = 2
+camera.position.z = 4
 scene.add(camera)
 
 // Controls
@@ -147,7 +95,8 @@ controls.enableDamping = true
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
+    canvas: canvas,
+    antialias: true
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -160,15 +109,6 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
-
-    // Update objects
-    sphere.rotation.y = 0.1 * elapsedTime
-    plane.rotation.y = 0.1 * elapsedTime
-    torus.rotation.y = 0.1 * elapsedTime
-
-    sphere.rotation.x = - 0.15 * elapsedTime
-    plane.rotation.x = - 0.15 * elapsedTime
-    torus.rotation.x = - 0.15 * elapsedTime
 
     // Update controls
     controls.update()
