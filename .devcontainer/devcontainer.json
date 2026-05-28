@@ -14,7 +14,8 @@
     "vscode": {
       "extensions": [
         "vector-of-bool.gitflow",
-        "GitHub.copilot-chat"
+        "GitHub.copilot-chat",
+        "bradlc.vscode-tailwindcss"
       ]
     }
   }
