@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default {
     root: 'src/', // Sources files (typically where index.html is)
+    assetsInclude: ['**/*.html'],
     publicDir: '../static/', // Path from "root" to static assets (files that are served as they are)
     server:
     {
