@@ -2,7 +2,6 @@ import './header/vivar-header.js';
 
 import './sections/welcome/welcome-section.js';
 import './sections/gallery/gallery-section.js';
-import './sections/contact-me/contact-section.js';
 
 import './footer/footer.js';
 
