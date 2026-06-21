@@ -1,12 +1,10 @@
-import * as THREE from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import EventEmitter from './EventEmitter.js'
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import EventEmitter from './EventEmitter.js';
 
-export default class Resources extends EventEmitter
-{
-    constructor(sources)
-    {
+export default class Resources extends EventEmitter {
+    constructor(sources) {
         super();
 
         this.sources = sources;
@@ -19,8 +17,7 @@ export default class Resources extends EventEmitter
         this.startLoading();
     }
 
-    setLoaders()
-    {
+    setLoaders() {
         // Draco loader
         const dracoLoader = new DRACOLoader();
         dracoLoader.setDecoderPath('draco/');
@@ -28,19 +25,17 @@ export default class Resources extends EventEmitter
         this.loaders = {
             gltfLoader: new GLTFLoader(),
             textureLoader: new THREE.TextureLoader(),
-            cubeTextureLoader: new THREE.CubeTextureLoader()
+            cubeTextureLoader: new THREE.CubeTextureLoader(),
         };
-        
+
         this.loaders.gltfLoader.setDRACOLoader(dracoLoader);
     }
 
-    startLoading()
-    {
+    startLoading() {
         // Load each source
-        for(const source of this.sources)
-        {
+        for (const source of this.sources) {
             let loader = undefined;
-            switch(source.type) {
+            switch (source.type) {
                 case 'gltfModel':
                     loader = this.loaders.gltfLoader;
                     break;
@@ -53,24 +48,19 @@ export default class Resources extends EventEmitter
             }
 
             if (loader) {
-                loader.load(
-                    source.path,
-                    (file) => this.sourceLoaded(source, file)
-                );
+                loader.load(source.path, (file) => this.sourceLoaded(source, file));
             } else {
                 console.warn(`not found loader for source.type: ${source.type}`);
             }
         }
     }
 
-    sourceLoaded(source, file)
-    {
+    sourceLoaded(source, file) {
         this.items[source.name] = file;
 
         this.loaded++;
 
-        if(this.loaded === this.toLoad)
-        {
+        if (this.loaded === this.toLoad) {
             this.trigger('ready');
         }
     }
