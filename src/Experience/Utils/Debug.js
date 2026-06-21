@@ -1,9 +1,8 @@
-import GUI from 'lil-gui'
+import GUI from 'lil-gui';
 
-export default class Debug
-{
+export default class Debug {
     constructor() {
-        if(window.location.hash === '#debug') {
+        if (window.location.hash === '#debug') {
             this.ui = new GUI({ width: 400 });
         }
     }

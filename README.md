@@ -1,10 +1,11 @@
 # web
 
 ## Setup
+
 Download [Node.js](https://nodejs.org/en/download/).
 Run this followed commands:
 
-``` bash
+```bash
 # Install dependencies (only the first time)
 npm install
 
@@ -16,6 +17,7 @@ npm run build
 ```
 
 ## Estructura de un portfolio
-Tenemos que poner lo que el cliente quiere ver cuando entre a nuestra página. 
+
+Tenemos que poner lo que el cliente quiere ver cuando entre a nuestra página.
 ¿qué es lo que yo puedo hacer para él? => Qué es lo que ofrezco
 demostraciones de lo que ofrezco

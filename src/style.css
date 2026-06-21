@@ -1,37 +1,32 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 html,
-body
-{
+body {
     margin: 0;
     padding: 0;
     height: 100%;
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
-body
-{
+body {
     scroll-snap-type: y mandatory;
     scroll-padding-top: 56px;
     scroll-behavior: smooth;
 }
 
-.webgl
-{
+.webgl {
     outline: none;
     width: 100%;
     flex-grow: 1;
 }
 
-
-vivar-header 
-{
+vivar-header {
     position: fixed;
     top: 0;
     left: 0;
@@ -50,8 +45,7 @@ vivar-header
     scroll-snap-type: y mandatory;
 }
 
-.section
-{
+.section {
     display: flex;
     align-items: center;
     height: 100%;
@@ -64,6 +58,5 @@ vivar-header
 }
 
 footer {
-    
     scroll-snap-align: end;
 }
