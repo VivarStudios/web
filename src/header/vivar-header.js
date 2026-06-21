@@ -9,9 +9,8 @@ class VivarHeader extends HTMLElement {
     switchEl.checked = localStorage.theme === 'dark';
 
     switchEl.addEventListener('change', (e) => {
-      console.log('theme-switch clic')
       localStorage.theme = e.target.checked ? "dark" : "light";
-      document.documentElement.dataset.theme = localStorage.theme; 
+      document.documentElement.dataset.theme = localStorage.theme;
     });
   }
 }

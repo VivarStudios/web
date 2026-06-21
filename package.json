@@ -14,6 +14,7 @@
     "vite-plugin-restart": "^0.4.2"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@tailwindcss/vite": "^4.3.1",
     "lil-gui": "^0.21.0",
     "tailwindcss": "^4.3.1",
