@@ -1,123 +1,40 @@
-import GUI from 'lil-gui'
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import './header/vivar-header.js';
 
-/**
- * Base
- */
-// Debug
-const gui = new GUI({
-    width: 400
-})
+import './sections/welcome/welcome-section.js';
+import './sections/gallery/gallery-section.js';
 
-// Canvas
-const canvas = document.querySelector('canvas.webgl')
+import './footer/footer.js';
 
-// Scene
-const scene = new THREE.Scene()
+//import Experience from './Experience/Experience.js';
 
-/**
- * Loaders
- */
-// Texture loader
-const textureLoader = new THREE.TextureLoader()
+//const experience = new Experience(document.querySelector('canvas.webgl'))
 
-// Draco loader
-const dracoLoader = new DRACOLoader()
-dracoLoader.setDecoderPath('draco/')
+// =======================================
+// Support light mode, dark mode
+// =======================================
+// On page load or when changing themes, best to add inline in `head` to avoid FOUC
+document.documentElement.classList.toggle(
+    'dark',
+    localStorage.theme === 'dark' ||
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+);
+document.documentElement.dataset.theme = localStorage.theme ?? 'light';
 
-// GLTF loader
-const gltfLoader = new GLTFLoader()
-gltfLoader.setDRACOLoader(dracoLoader)
-
-/**
- * Materials
- */
-// Baked material
-const bakedMaterial = new THREE.MeshMatcapMaterial({ color: 0xffffff })
-
-/**
- * Model
- */
-gltfLoader.load(
-    //'model/scene2.glb',
-    'model/VivarStudios_3.glb',
-    (gltf) =>
-    {
-        gltf.scene.traverse((child) =>
-        {
-            child.material = bakedMaterial
-        })
-        scene.add(gltf.scene)
+// Colocar esto antes de cualquier otra cosa en tu script
+history.scrollRestoration = 'manual';
+window.addEventListener('load', () => {
+    const hash = window.location.hash;
+    if (hash) {
+        const element = document.querySelector(hash);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
     }
-)
+});
 
-/**
- * Sizes
- */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-}
-
-window.addEventListener('resize', () =>
-{
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
-
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-})
-
-/**
- * Camera
- */
-// Base camera
-const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 4
-camera.position.y = 2
-camera.position.z = 4
-scene.add(camera)
-
-// Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
-
-/**
- * Renderer
- */
-const renderer = new THREE.WebGLRenderer({
-    canvas: canvas,
-    antialias: true
-})
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-/**
- * Animate
- */
-const clock = new THREE.Clock()
-
-const tick = () =>
-{
-    const elapsedTime = clock.getElapsedTime()
-
-    // Update controls
-    controls.update()
-
-    // Render
-    renderer.render(scene, camera)
-
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
-}
-
-tick()
+// Whenever the user explicitly chooses light mode
+//localStorage.theme = "light";
+// Whenever the user explicitly chooses dark mode
+//localStorage.theme = "dark";
+// Whenever the user explicitly chooses to respect the OS preference
+//localStorage.removeItem("theme");
