@@ -1,7 +1,8 @@
 import './header/vivar-header.js';
 
 import './sections/welcome/welcome-section.js';
-import './sections/gallery/gallery-section.js';
+import './sections/about-me/about-section.js';
+import './sections/stack/stack-section.js';
 
 import './footer/footer.js';
 
