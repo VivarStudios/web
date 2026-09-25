@@ -7,28 +7,18 @@
         <link rel="stylesheet" href="./style.css" />
     </head>
     <body>
-        <div class="drawer drawer-end">
-            <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />
-            <div class="drawer-content flex flex-col">
-                 <vivar-header></vivar-header>
+        <div class="min-h-screen max-h-screen flex flex-col">
 
-                <div class="section-container">
-                    <welcome-section id="welcome"></welcome-section>
-                    <stack-section id="stack"></stack-section>
-                    <about-section id="about"></about-section>
-                    <vivar-footer id="contact"></vivar-footer>
-                </div>
-            </div>
-            <div class="drawer-side">
-                <label for="my-drawer-1" aria-label="close sidebar" class="drawer-overlay bg-amber-300"></label>
-                <ul class="menu bg-amber-100 min-h-full w-80 p-4">
-                <!-- Sidebar content here -->
-                <li><a>Sidebar Item 1</a></li>
-                <li><a>Sidebar Item 2</a></li>
-                </ul>
+            <vivar-toolbar></vivar-toolbar>
+
+            <div class="section-container">
+                <div class="section"></div>
+                <welcome-section id="welcome"></welcome-section>
+                <stack-section id="stack"></stack-section>
+                <about-section id="about"></about-section>
+                <vivar-footer id="contact"></vivar-footer>
             </div>
         </div>
-
         <script type="module" src="./script.js"></script>
     </body>
 </html>

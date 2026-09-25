@@ -1,4 +1,4 @@
-import './header/vivar-header.js';
+import './toolbar/vivar-toolbar.js';
 
 import './sections/welcome/welcome-section.js';
 import './sections/about-me/about-section.js';
