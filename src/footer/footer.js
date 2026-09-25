@@ -10,7 +10,8 @@ class Footer extends HTMLElement {
         const form = document.querySelector('#contactForm');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            emailjs.sendForm('SERVICE_ID', 'TEMPLATE_ID', form, 'PUBLIC_KEY')
+            emailjs
+                .sendForm('SERVICE_ID', 'TEMPLATE_ID', form, 'PUBLIC_KEY')
                 .then(() => alert('¡Enviado!'))
                 .catch((err) => alert('Error: ' + err));
         });
