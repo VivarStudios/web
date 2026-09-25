@@ -28,5 +28,8 @@
         "lil-gui": "^0.21.0",
         "tailwindcss": "^4.3.1",
         "three": "^0.174.0"
+    },
+    "allowScripts": {
+        "esbuild@0.25.12": true
     }
 }
