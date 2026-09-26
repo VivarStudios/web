@@ -6,8 +6,6 @@ import './sections/about-me/about-section.js';
 import './sections/stack/stack-section.js';
 import './sections/contact/contact-section.js';
 
-import './footer/footer.js';
-
 //import Experience from './Experience/Experience.js';
 
 //const experience = new Experience(document.querySelector('canvas.webgl'))
