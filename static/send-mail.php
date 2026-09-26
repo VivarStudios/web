@@ -19,14 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Tu dirección de correo donde recibirás los mensajes
-    $to = "tu-correo@midominio.com";
+    $to = "ma.fuentes@vivarstudios.com";
     $subject = "Nuevo mensaje de contacto de: $nombre";
     
     $body = "Nombre: $nombre\n";
     $body .= "Correo: $email\n\n";
     $body .= "Mensaje:\n$mensaje\n";
 
-    $headers = "From: noreply@midominio.com\r\n";
+    $headers = "From: noreply@vivarstudios.com\r\n";
     $headers .= "Reply-To: $email\r\n";
 
     if (mail($to, $subject, $body, $headers)) {
