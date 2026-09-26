@@ -15,7 +15,7 @@
                 </svg>
                 Nombre *
             </legend>
-            <input id="name" type="text" class="input validator w-full" required placeholder="Nombre"
+            <input id="name" name="name" type="text" class="input validator w-full" required placeholder="Nombre"
                 pattern="[A-Za-zÀ-ÖØ-öø-ÿ][A-Za-zÀ-ÖØ-öø-ÿ0-9 \-]*" minlength="3" maxlength="30"
                 title="Solo letras, números, guiones, espacios y acentos" />
             <p class="validator-hint hidden">
@@ -36,7 +36,7 @@
                 </svg>
                 Email *
             </legend>
-            <input id="email" type="email" class="input validator w-full" placeholder="Email" required />
+            <input id="email" name="email" type="email" class="input validator w-full" placeholder="Email" required />
             <p class="validator-hint hidden">Introduzca un email válido</p>
         </fieldset>
 
@@ -56,3 +56,32 @@
         </div>
     </form>
 </div>
+
+<dialog id="contact-modalLoading" class="modal">
+  <div class="modal-box flex flex-wrap items-center justify-center">
+    <span class="loading loading-ring loading-xl"></span>
+    <p>Enviando...</p>
+  </div>
+</dialog>
+
+<dialog id="contact-modalSuccess" class="modal">
+  <div class="modal-box p-0">
+    <div role="alert" class="alert alert-success">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Enviado!</span>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="contact-modalError" class="modal">
+  <div class="modal-box p-0">
+    <div role="alert" class="alert alert-error">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Error!, no enviado.</span>
+    </div>
+  </div>
+</dialog>
