@@ -1,6 +1,22 @@
 @import 'tailwindcss';
 @plugin "daisyui";
 
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/montserrat-jtusjig1_i6t8kchkm459wlhyw.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat Alternates';
+    src: url('https://fonts.gstatic.com/s/montserratalternates/v18/mFTiWacfw6zH4dthXcyms1lPpC8I_b0juU0xTIHFB7xG-GNxkg.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+}
+
 
 
 html,
@@ -15,6 +31,27 @@ html {
     scroll-behavior: smooth;
     background-color: cadetblue;
     color: black;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.font-sans {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Montserrat Alternates', 'Montserrat', sans-serif;
 }
 
 .app {

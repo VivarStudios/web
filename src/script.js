@@ -3,7 +3,7 @@ import './toolbar/vivar-footbar.js';
 
 import './sections/welcome/welcome-section.js';
 import './sections/about-me/about-section.js';
-import './sections/stack/stack-section.js';
+import './sections/work/work-section.js';
 import './sections/contact/contact-section.js';
 
 //import Experience from './Experience/Experience.js';
