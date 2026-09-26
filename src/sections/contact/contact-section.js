@@ -1,5 +1,4 @@
 import contactHTML from './contact-section.html?raw';
-import emailjs from '@emailjs/browser';
 
 class ContactSection extends HTMLElement {
     connectedCallback() {
@@ -8,12 +7,31 @@ class ContactSection extends HTMLElement {
         }
 
         const form = document.querySelector('#contactForm');
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            emailjs
-                .sendForm('SERVICE_ID', 'TEMPLATE_ID', form, 'PUBLIC_KEY')
-                .then(() => alert('¡Enviado!'))
-                .catch((err) => alert('Error: ' + err));
+            this.sendEmail({
+                name: form.name.value,
+                email: form.email.value,
+                message: form.message.value
+            });
+        });
+    }
+
+    sendEmail(data) {
+        fetch('/send-mail.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then((response) => response?.json())
+        .then((data) => {
+            console.log('Success:', data);
+            alert('¡Enviado!');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Mi Error: ' + error);
         });
     }
 }
