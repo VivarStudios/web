@@ -1,17 +1,10 @@
-<footer class="footer flex flex-col sm:flex-row sm:footer-horizontal bg-base-200 text-base-content p-10">
-    <nav class="order-2 sm:order-1 sm:w-1/2 w-full sm:max-w-screen-sm mx-auto">
-        <h6 class="footer-title">Redes Sociales</h6>
-        <a class="link link-hover" href="https://www.instagram.com/vivarstudios/" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a class="link link-hover" href="https://www.youtube.com/@VivarStudiosChanel" target="_blank" rel="noopener noreferrer">YouTube</a>
-    </nav>
-    
+<div class="flex flex-col grow w-full p-10 max-w-2xl justify-center">
+    <form id="contactForm" method="POST" class="flex flex-col w-full items-center order-1">
 
-    <form id="contactForm" method="POST" class="w-full order-1 sm:order-2 sm:w-1/2 ">
-
-        <h6 class="footer-title">Contacto</h6>
+        <h6>Contacto</h6>
 
         <!-- Nombre -->
-        <fieldset class="fieldset w-full sm:max-w-screen-sm">
+        <fieldset class="fieldset w-full">
             <legend class="fieldset-legend">
                 <svg class="h-[1em] opacity-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
@@ -32,7 +25,7 @@
         </fieldset>
 
         <!-- Email -->
-        <fieldset class="fieldset w-full sm:max-w-screen-sm">
+        <fieldset class="fieldset w-full">
             <legend class="fieldset-legend">
                 <svg class="h-[1em] opacity-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
@@ -47,7 +40,7 @@
             <p class="validator-hint hidden">Introduzca un email válido</p>
         </fieldset>
 
-        <fieldset class="fieldset w-full sm:max-w-screen-sm">
+        <fieldset class="fieldset w-full">
             <legend class="fieldset-legend">¿Qué necesitas?</legend>
             <textarea id="message" name="message" class="textarea h-24 input validator w-full" placeholder="¿Qué necesitas?"
                 minlength="5" maxlength="1000" required></textarea>
@@ -57,9 +50,9 @@
             <p class="validator-hint hidden">Este campo es obligatorio entre 5 y 1000 caracteres</p>
         </fieldset>
 
-        <div class="flex items-center gap-2 mt-4 w-full sm:max-w-screen-sm">
+        <div class="flex items-center gap-2 mt-4 w-full">
             <button class="btn btn-ghost" type="reset">Reset</button>
             <button class="btn btn-primary flex-1" type="submit">Enviar</button>
         </div>
     </form>
-</footer>
+</div>
