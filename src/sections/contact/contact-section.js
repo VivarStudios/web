@@ -18,6 +18,21 @@ class ContactSection extends HTMLElement {
         }
 
         const form = this.querySelector('#contactForm');
+        const message = this.querySelector('#message');
+        const messageCount = this.querySelector('#messageCount');
+        const messageMax = this.querySelector('#messageMax');
+
+        const updateMessageCount = () => {
+            messageCount.textContent = message.value.length;
+            messageMax.textContent = message.maxLength;
+        };
+
+        message.addEventListener('input', updateMessageCount);
+        form.addEventListener('reset', () => {
+            requestAnimationFrame(updateMessageCount);
+        });
+        updateMessageCount();
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             this.sendEmail({
