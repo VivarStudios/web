@@ -1,10 +1,10 @@
-import './header/vivar-header.js';
+import './toolbar/vivar-toolbar.js';
+import './toolbar/vivar-footbar.js';
 
 import './sections/welcome/welcome-section.js';
 import './sections/about-me/about-section.js';
 import './sections/stack/stack-section.js';
-
-import './footer/footer.js';
+import './sections/contact/contact-section.js';
 
 //import Experience from './Experience/Experience.js';
 
