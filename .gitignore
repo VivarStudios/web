@@ -6,3 +6,4 @@ node_modules/**
 # ignore build output
 dist/**
 build/**
+*.blend1
