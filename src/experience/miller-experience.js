@@ -1,6 +1,7 @@
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { SkyMesh } from 'three/addons/objects/SkyMesh.js';
 import * as THREE from 'three/webgpu';
 
 export default class MillerExperience {
@@ -33,33 +34,15 @@ export default class MillerExperience {
             this.refreshSize();
 
             // Update camera
-            this.camera.aspect = this.sizes.width / this.sizes.height;
-            this.camera.updateProjectionMatrix();
+            if (this.camera) {
+                this.camera.aspect = this.sizes.width / this.sizes.height;
+                this.camera.updateProjectionMatrix();
+            }
 
             // Update renderer
             this.renderer.setSize(this.sizes.width, this.sizes.height);
             this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         });
-
-        /**
-         * Camera
-         */
-        // Base camera
-        this.camera = new THREE.PerspectiveCamera(
-            35,
-            this.sizes.width / this.sizes.height,
-            0.1,
-            100
-        );
-        this.camera.position.x = 5;
-        this.camera.position.y = 4.5;
-        this.camera.position.z = 2.5;
-        this.scene.add(this.camera);
-
-        // Controls
-        const controls = new OrbitControls(this.camera, this.canvas);
-        controls.target.set(0, 1, 0);
-        controls.enableDamping = true;
 
         /**
          * Renderer
@@ -77,8 +60,25 @@ export default class MillerExperience {
         /**
          * Models
          */
+        const sky = new SkyMesh();
+        //sky.scale.set(100, 100, 100);
+        sky.scale.setScalar(450000);
+        this.scene.add(sky);
+
         this.gltfLoader.load('/model/miller-web.glb', (gltf) => {
+            console.log(gltf.scene);
             this.scene.add(gltf.scene);
+
+            this.camera = gltf.cameras[0];
+            // Update camera
+            this.camera.aspect = this.sizes.width / this.sizes.height;
+            this.camera.updateProjectionMatrix();
+
+            // Controls
+            //const controls = new OrbitControls(this.camera, this.canvas);
+            //controls.target.set(0, 1, 0);
+            //controls.enableDamping = true;
+            this.initSky();
         });
 
         /**
@@ -105,10 +105,12 @@ export default class MillerExperience {
          */
         const tick = () => {
             // Update controls
-            controls.update();
+            //controls.update();
 
             // Render
-            this.renderer.render(this.scene, this.camera);
+            if (this.camera) {
+                this.renderer.render(this.scene, this.camera);
+            }
         };
 
         this.renderer.setAnimationLoop(tick);
@@ -118,4 +120,70 @@ export default class MillerExperience {
         this.sizes.width = this.canvasContainer.offsetWidth;
         this.sizes.height = this.canvasContainer.offsetHeight;
     }
+
+    initSky() {
+        // Add Sky
+        const sky = new SkyMesh();
+        sky.scale.setScalar( 450000 );
+        this.scene.add(sky);
+
+		const sun = new THREE.Vector3();
+
+				/// GUI
+
+				const effectController = {
+					turbidity: 10,
+					rayleigh: 3,
+					mieCoefficient: 0.005,
+					mieDirectionalG: 0.7,
+					elevation: 65,
+					azimuth: 0,
+					exposure: 0.05,
+					cloudCoverage: 0.4,
+					cloudDensity: 0.4,
+					cloudElevation: 0.5,
+					showSunDisc: true
+				};
+
+				function guiChanged() {
+
+					sky.turbidity.value = effectController.turbidity;
+					sky.rayleigh.value = effectController.rayleigh;
+					sky.mieCoefficient.value = effectController.mieCoefficient;
+					sky.mieDirectionalG.value = effectController.mieDirectionalG;
+					sky.cloudCoverage.value = effectController.cloudCoverage;
+					sky.cloudDensity.value = effectController.cloudDensity;
+					sky.cloudElevation.value = effectController.cloudElevation;
+					sky.showSunDisc.value = effectController.showSunDisc;
+
+					const phi = THREE.MathUtils.degToRad( 90 - effectController.elevation );
+					const theta = THREE.MathUtils.degToRad( effectController.azimuth );
+
+					sun.setFromSphericalCoords( 1, phi, theta );
+
+					sky.sunPosition.value.copy( sun );
+
+					//this.renderer.toneMappingExposure = effectController.exposure;
+
+				}
+
+				//const gui = this.renderer.inspector.createParameters( 'Settings' );
+//
+				//gui.add( effectController, 'turbidity', 0.0, 20.0, 0.1 ).onChange( guiChanged );
+				//gui.add( effectController, 'rayleigh', 0.0, 4, 0.001 ).onChange( guiChanged );
+				//gui.add( effectController, 'mieCoefficient', 0.0, 0.1, 0.001 ).onChange( guiChanged );
+				//gui.add( effectController, 'mieDirectionalG', 0.0, 1, 0.001 ).onChange( guiChanged );
+				//gui.add( effectController, 'elevation', 0, 90, 0.1 ).onChange( guiChanged );
+				//gui.add( effectController, 'azimuth', - 180, 180, 0.1 ).onChange( guiChanged );
+				//gui.add( effectController, 'exposure', 0, 1, 0.0001 ).onChange( guiChanged );
+				//gui.add( effectController, 'showSunDisc' ).onChange( guiChanged );
+
+				//const folderClouds = gui.addFolder( 'Clouds' );
+				//folderClouds.add( effectController, 'cloudCoverage', 0, 1, 0.01 ).name( 'coverage' ).onChange( guiChanged );
+				//folderClouds.add( effectController, 'cloudDensity', 0, 1, 0.01 ).name( 'density' ).onChange( guiChanged );
+				//folderClouds.add( effectController, 'cloudElevation', 0, 1, 0.01 ).name( 'elevation' ).onChange( guiChanged );
+
+				guiChanged();
+
+			}
 }
