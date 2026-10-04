@@ -1,5 +1,6 @@
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { checker, positionLocal, sin, time, uv, vec2, vec3 } from 'three/tsl';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import * as THREE from 'three/webgpu';
 
 export default class MillerExperience {
@@ -7,8 +8,15 @@ export default class MillerExperience {
         this.canvas = document.getElementById(_canvasId);
         this.canvasContainer = document.getElementById(_canvasContainerId);
 
+        /**
+         * Loaders
+         */
+        const dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderPath('/draco/');
+        this.gltfLoader = new GLTFLoader();
+        this.gltfLoader.setDRACOLoader(dracoLoader);
+
         this.scene = new THREE.Scene();
-        const textureLoader = new THREE.TextureLoader();
 
         /**
          * Sizes
@@ -67,49 +75,11 @@ export default class MillerExperience {
         this.renderer.setClearColor(0x111111);
 
         /**
-         * Floor
+         * Models
          */
-        {
-            const textureColor = textureLoader.load('./floor-color.jpg');
-            textureColor.colorSpace = THREE.SRGBColorSpace;
-
-            const geometry = new THREE.PlaneGeometry(10, 10, 10, 10);
-
-            const material = new THREE.MeshStandardMaterial({ map: textureColor });
-
-            const mesh = new THREE.Mesh(geometry, material);
-            mesh.rotation.x = 0 - Math.PI * 0.5;
-            mesh.receiveShadow = true;
-            this.scene.add(mesh);
-        }
-
-        /**
-         * Torus Knot
-         */
-        {
-            const geometry = new THREE.TorusKnotGeometry(0.5, 0.24, 128, 32);
-            const material = new THREE.MeshStandardNodeMaterial({
-                metalness: 0.5,
-            });
-
-            // prettier-ignore
-            const pattern = checker(
-                uv()
-                    .add(time.mul(0.02))
-                    .mul(vec2(40, 5))
-            );
-
-            material.colorNode = vec3(pattern, 0, 0);
-            material.roughnessNode = pattern;
-            const zOffset = sin(time);
-            material.positionNode = positionLocal.add(vec3(0, 0, zOffset));
-
-            const mesh = new THREE.Mesh(geometry, material);
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-            mesh.position.y = 1;
-            this.scene.add(mesh);
-        }
+        this.gltfLoader.load('/model/miller-web.glb', (gltf) => {
+            this.scene.add(gltf.scene);
+        });
 
         /**
          * Lights
