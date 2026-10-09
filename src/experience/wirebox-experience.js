@@ -1,7 +1,7 @@
 import * as THREE from 'three/webgpu';
 import { Experience, textureLoader } from './experience.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { checker, positionLocal, sin, time, uv, vec2, vec3 } from 'three/tsl'
+import { checker, positionLocal, sin, time, uv, vec2, vec3 } from 'three/tsl';
 
 export default class WireboxExperience extends Experience {
     constructor(_canvasContainerId, _canvasId) {
