@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 export default class MillerExperience extends Experience {
     constructor(_canvasContainerId, _canvasId) {
-        super(_canvasContainerId, _canvasId, false, true);
+        super(_canvasContainerId, _canvasId, true, true);
     }
 
     loadModel() {
@@ -17,14 +17,21 @@ export default class MillerExperience extends Experience {
             this.camera.aspect = this.sizes.width / this.sizes.height;
             this.camera.updateProjectionMatrix();
 
-            // Controls
-            const controls = new OrbitControls(this.camera, this.canvas);
-            controls.target.set(
-                gltf.scene.position.x,
-                gltf.scene.position.y,
-                gltf.scene.position.z
-            );
-            controls.enableDamping = true;
+            // 2. Inicializar la GUI
+            const gui = this.renderer.inspector.createParameters('Control de Cámara');
+
+            // Crear carpetas para organizar los datos
+            const posFolder = gui.addFolder('Posición');
+            const rotFolder = gui.addFolder('Rotación (Radianes)');
+
+            // Añadir los controladores y usar .listen() para que se actualicen en vivo
+            posFolder.add(this.camera.position, 'x').listen();
+            posFolder.add(this.camera.position, 'y').listen();
+            posFolder.add(this.camera.position, 'z').listen();
+
+            rotFolder.add(this.camera.rotation, 'x').name('Rotar X').listen();
+            rotFolder.add(this.camera.rotation, 'y').name('Rotar Y').listen();
+            rotFolder.add(this.camera.rotation, 'z').name('Rotar Z').listen();
         });
 
         /**
