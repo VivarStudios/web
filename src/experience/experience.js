@@ -2,6 +2,7 @@ import * as THREE from 'three/webgpu';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { Inspector } from 'three/addons/inspector/Inspector.js';
+import { EXRLoader } from 'three/addons/loaders/EXRLoader.js';
 
 /**
  * Loaders
@@ -15,6 +16,14 @@ export const textureLoader = new THREE.TextureLoader();
 
 export class Experience {
     constructor(_canvasContainerId, _canvasId, _showInspector = false, _rendererAlpha = false) {
+        // Setup
+        this.start = Date.now();
+        this.current = this.start;
+        this.elapsed = 0;
+        this.delta = 16;
+
+        this.exrLoader = new EXRLoader();
+
         this.canvas = document.getElementById(_canvasId);
         this.canvasContainer = document.getElementById(_canvasContainerId);
 
@@ -75,6 +84,10 @@ export class Experience {
          * Animate
          */
         const tick = () => {
+            const currentTime = Date.now();
+            this.delta = currentTime - this.current;
+            this.current = currentTime;
+            this.elapsed = this.current - this.start;
             this.onTick();
 
             // Renders

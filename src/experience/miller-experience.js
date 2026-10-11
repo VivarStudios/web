@@ -1,6 +1,6 @@
 import * as THREE from 'three/webgpu';
 import { Experience, gltfLoader } from './experience.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
 
 export default class MillerExperience extends Experience {
     constructor(_canvasContainerId, _canvasId) {
@@ -9,36 +9,44 @@ export default class MillerExperience extends Experience {
 
     loadModel() {
         gltfLoader.load('/model/miller-web.glb', (gltf) => {
-            this.scene.add(gltf.scene);
+            console.log(gltf);
+            const model = gltf.scene;
+            this.scene.add(model);
 
             this.camera = gltf.cameras[0];
+
+            this.mixer = new THREE.AnimationMixer(model);
+            for (const animation of gltf.animations) {
+                this.mixer.clipAction(animation).play();
+            }
+
+            model.children.forEach((child) => {
+
+                if (child.isMesh) {
+                    console.log(child.name);
+                   //if (['terreno_campo', 'terreno_base_molino'].includes(child.name)) {
+                    //    child.receiveShadow = true;
+                    //} else {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                    //}
+                }
+            });
 
             // Update camera
             this.camera.aspect = this.sizes.width / this.sizes.height;
             this.camera.updateProjectionMatrix();
         });
 
-        /**
-         * Lights
-         */
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 4.5);
-        directionalLight.castShadow = true;
-        directionalLight.position.set(2, 0.75, -1).normalize().multiplyScalar(10);
-        directionalLight.shadow.camera.top = 10;
-        directionalLight.shadow.camera.right = 10;
-        directionalLight.shadow.camera.bottom = -10;
-        directionalLight.shadow.camera.left = -10;
-        directionalLight.shadow.camera.near = 0.01;
-        directionalLight.shadow.camera.far = 20;
-        directionalLight.shadow.radius = 3;
-        directionalLight.shadow.normalBias = 0.1;
-        this.scene.add(directionalLight);
-
-        const ambientLight = new THREE.AmbientLight(0x859dff, 1);
-        this.scene.add(ambientLight);
+        this.exrLoader.load('/envMaps/forest.exr', (texture) => {
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            //this.scene.background = texture;
+            this.scene.environment = texture;
+        });
     }
 
     onTick() {
+        this.mixer?.update(this.delta * 0.001);
         // Update controls
         this.controls?.update();
     }
