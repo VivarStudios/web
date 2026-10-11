@@ -5,13 +5,6 @@ import './sections/welcome/welcome-section.js';
 import './sections/work/work-section.js';
 import './sections/contact/contact-section.js';
 
-<<<<<<< HEAD
-document.documentElement.dataset.theme = 'light';
-
-//const experience = new Experience(document.querySelector('canvas.webgl'))
-
-=======
->>>>>>> feature/threejs-welcome
 document.documentElement.dataset.theme = 'light';
 
 // para ir a la sección correspondiente en función del hash de la url
