@@ -10,7 +10,7 @@ export default {
     build: {
         outDir: '../dist', // Output in the dist/ folder
         emptyOutDir: true, // Empty the folder first
-        sourcemap: true, // Add sourcemap
+        sourcemap: false, // No source maps for production
     },
     plugins: [
         // Minimalist plugin to reload the page on file change in ./static/
@@ -24,7 +24,7 @@ export default {
                         return;
                     }
 
-                    if(event === 'add' || event === 'unlink') {
+                    if (event === 'add' || event === 'unlink') {
                         server.restart();
                     } else {
                         server.ws.send({ type: 'full-reload' });
@@ -34,4 +34,4 @@ export default {
         },
         tailwindcss(),
     ],
-}
+};
