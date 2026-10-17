@@ -1,7 +1,6 @@
 import * as THREE from 'three/webgpu';
 import { Experience, gltfLoader } from './experience.js';
 
-
 export default class MillerExperience extends Experience {
     constructor(_canvasContainerId, _canvasId) {
         super(_canvasContainerId, _canvasId, false, true);
@@ -9,7 +8,7 @@ export default class MillerExperience extends Experience {
 
     loadModel() {
         gltfLoader.load('/model/miller-web.glb', (gltf) => {
-            console.log(gltf);
+            //console.log(gltf);
             const model = gltf.scene;
             this.scene.add(model);
 
@@ -21,14 +20,13 @@ export default class MillerExperience extends Experience {
             }
 
             model.children.forEach((child) => {
-
                 if (child.isMesh) {
-                    console.log(child.name);
-                   //if (['terreno_campo', 'terreno_base_molino'].includes(child.name)) {
+                    //console.log(child.name);
+                    //if (['terreno_campo', 'terreno_base_molino'].includes(child.name)) {
                     //    child.receiveShadow = true;
                     //} else {
-                        child.castShadow = true;
-                        child.receiveShadow = true;
+                    //    child.castShadow = true;
+                    //    child.receiveShadow = true;
                     //}
                 }
             });

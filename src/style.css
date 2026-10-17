@@ -94,3 +94,9 @@ h6 {
 .dock {
     position: static;
 }
+
+.work-card {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
